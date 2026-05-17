@@ -17,7 +17,7 @@ Use this skill any time a .pptx file is involved in any way — as input, output
 |------|-------|
 | Read/analyze content | `python -m markitdown presentation.pptx` |
 | Edit or create from template | Read [editing.md](editing.md) |
-| Create from scratch | Read [pptxgenjs.md](pptxgenjs.md) |
+| Create from scratch | Read [pptxgenjs.md](pptxgenjs.md) — see also [pkg setup & table gotchas](references/pptxgenjs-gotchas.md) |
 
 ---
 
