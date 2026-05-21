@@ -1,0 +1,49 @@
+{
+  "jobs": [
+    {
+      "id": "338847732f84",
+      "name": "daily-news-briefing",
+      "prompt": "Fetch and summarize the news in all four categories (Malaysia, Global, Iran-US conflict, and Technology/AI) as per the get-news skill. Present the summary clearly.",
+      "skills": [
+        "get-news"
+      ],
+      "skill": "get-news",
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 6 * * *",
+        "display": "0 6 * * *"
+      },
+      "schedule_display": "0 6 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 5
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-15T19:23:46.878177+08:00",
+      "next_run_at": "2026-05-21T06:00:00+08:00",
+      "last_run_at": "2026-05-20T06:01:23.742424+08:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "origin",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "6191189810",
+        "chat_name": "Fahmi Amni",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null
+    }
+  ],
+  "updated_at": "2026-05-20T06:01:23.744521+08:00"
+}
