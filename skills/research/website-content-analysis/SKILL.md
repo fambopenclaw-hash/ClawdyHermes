@@ -6,7 +6,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [browser, research, analysis, web, content]
-    related_skills: [dogfood]
+    related_skills: [dogfood, html-publishing]
 ---
 
 # Website Content Analysis
@@ -158,13 +158,124 @@ Users may also ask "What are the alternatives?" After phases 1-5, research compa
 
 4. **Present alternatives in a structured comparison** (table format with columns for Source, Type, Content, Cost) and highlight the best replacement.
 
-## Tips
+---
 
-- **Start with the main page** — it usually tells you the most about the site's purpose
-- **Follow navigation links** — the menu structure reveals what the site considers important
-- **Go back between deep dives** — use `browser_back()` rather than re-navigating to save time
-- **Check embedded content** — PDFs, iframes, image galleries, videos are important content indicators
-- **Note dates on everything** — timestamps are the #1 indicator of whether a site is alive or dead
-- **Check footer content** — copyright dates, contact info, and privacy/terms links give context about the publisher
-- **Watch for unrendered shortcodes and typos** — they're telltale signs of neglected maintenance
-- **When asked "what are the alternatives?"** — directly navigating to known competitors may be more reliable than search engines (which often block automated access)
+## Phase 7: Data Extraction from Dynamic Pages
+
+When `browser_snapshot()` shows only "Loading...", spinners, or empty containers — the page is a **client-side rendered SPA** (Next.js, React, Vue, Svelte, Angular). The actual data loads asynchronously after the initial HTML. Use **async JavaScript injection via `browser_console`** to extract it.
+
+### Prerequisites
+
+- Browser toolset: `browser_navigate`, `browser_snapshot`, `browser_console`
+- Target URL
+- Basic JavaScript (async/await, DOM queries, fetch API)
+
+### Phase 7a: Identify Dynamic Content
+
+1. Navigate to the URL: `browser_navigate(url="...")`
+2. Snapshot: `browser_snapshot()`
+   - If you see actual content → use main Phase 1-5 workflow
+   - If you see "Loading...", spinners, empty containers → continue to Phase 7b
+3. Check for client-side framework clues:
+   - `__NEXT_DATA__` script tag → Next.js
+   - `data-reactroot` or `__REACT_QUERY_STATE__` → React SPA
+   - `__NUXT__` → Nuxt/Vue
+   - API endpoint URLs in page source
+
+### Phase 7b: Extract Visible Text (Simple)
+
+Wait for JS to finish rendering, then dump all page text:
+
+```javascript
+// Wait 5 seconds for async data, then log page text
+browser_console(
+  expression="(async () => { await new Promise(r => setTimeout(r, 5000)); console.log(document.body.innerText); })()"
+)
+
+// Read the output
+browser_console()
+```
+
+**Timing**: Start with 5s. If data still missing, increase to 7-8s. For very heavy pages, try up to 10s.
+
+### Phase 7c: Extract Specific Elements (Targeted)
+
+For table/list data that's truncated by the full-page dump:
+
+```javascript
+// Query specific rendered DOM elements
+browser_console(
+  expression="(async () => { await new Promise(r => setTimeout(r, 5000)); const items = document.querySelectorAll('.model-row, tr, .list-item, [class*=\"rank\"]'); items.forEach(item => console.log(item.innerText.trim())); })()"
+)
+```
+
+### Phase 7d: Fetch Internal API Directly
+
+When you know (or can guess) the internal JSON API endpoint:
+
+```javascript
+// Same-origin fetch — works for internal APIs
+browser_console(
+  expression="(async () => { await new Promise(r => setTimeout(r, 2000)); const resp = await fetch('/api/v1/data', {headers: {'Accept': 'application/json'}}); const data = await resp.json(); console.log(JSON.stringify(data, null, 2)); })()"
+)
+```
+
+**Note**: Only works for same-origin endpoints. CORS blocks cross-origin fetches.
+
+### Phase 7e: Pagination and Infinite Scroll
+
+If the page only shows a few items:
+
+1. **Scroll** to trigger lazy-loading: `browser_scroll(direction="down")`
+2. **Wait** for new data to render: 3s delay
+3. **Extract** again using the console injection pattern
+
+### Common Framework Patterns
+
+| Framework | Clues | Extraction Strategy |
+|-----------|-------|-------------------|
+| **Next.js** | `__NEXT_DATA__`, `/api/*` routes | Console injection always works; also try `/_next/data/<build-id>/path.json` |
+| **React SPA** (CRA, Vite) | `#root` div, no SSR | Console injection; internal `/api/*` if same origin |
+| **Vue/Nuxt** | `__NUXT__` | May SSR some data; check snapshot first, fall back to console injection |
+
+### Pitfalls
+
+- **Vision analysis won't help** if the model doesn't support images — stick to console text extraction
+- **CORS** prevents cross-origin `fetch()` — only same-origin internal APIs work
+- **Auth-required APIs** return redirects to login pages, not data
+- **Rate limiting**: Some sites block rapid repeated API calls
+- **No `__NEXT_DATA__`** doesn't rule out Next.js — newer versions don't always embed it
+- **Filter/tab state**: The default tab may not be the one you want — click the right tab first, then extract
+
+### Worked Example: OpenRouter Rankings
+
+The full extraction recipe is in `references/openrouter-rankings-extraction.md`. Summary:
+1. Navigate to `https://openrouter.ai/rankings` (Next.js SPA)
+2. Wait 5s for rendering instead of trusting the "Loading..." snapshot
+3. Extract `document.body.innerText` via console injection
+4. Result: top 10 LLM models ranked by weekly token usage (see reference for exact data)
+
+---
+
+## Scraping + Publishing Workflow
+
+When the user wants to **extract live data AND publish it as a dashboard**, combine this skill with `html-publishing`:
+
+1. **Extract data** using Phase 7 techniques above
+2. **Format** the data as JSON or structured text
+3. **Build an auto-refreshing dashboard** or static HTML report using `html-publishing` Section 3 (Live API Dashboards)
+4. **Publish** to GitHub Pages using `html-publishing` Section 4
+
+For recurring scraping jobs, set up a `cronjob`:
+```python
+cronjob(
+    action='create',
+    schedule='0 9 * * *',   # Daily at 9AM
+    prompt="Scrape URL, extract data, commit to repo",
+    toolsets=["browser", "terminal", "file"]
+)
+```
+
+---
+
+## Tips

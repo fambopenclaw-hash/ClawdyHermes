@@ -1,8 +1,8 @@
 {
-  "last_report_path": "/home/fahmibakeri/.hermes/logs/curator/20260520-174554",
-  "last_run_at": "2026-05-20T17:45:54.540118+00:00",
-  "last_run_duration_seconds": 7.685099,
-  "last_run_summary": "auto: no changes; llm: skipped (no candidates)",
+  "last_report_path": "/home/fahmibakeri/.hermes/logs/curator/20260527-180323",
+  "last_run_at": "2026-05-27T18:03:23.079857+00:00",
+  "last_run_duration_seconds": 229.353241,
+  "last_run_summary": "auto: no changes; llm: Here's the consolidation summary.\n\n---\n\n## Curator Consolidation Summary\n\n### Cluster 1 — HTML Publishing Pipeline (4 skills → 1 umbrella)\n\n**6 narrow skills** from the agent-created set formed two natural class-level clusters. I consolidat…",
   "paused": false,
-  "run_count": 1
+  "run_count": 2
 }

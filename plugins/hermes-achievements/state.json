@@ -1,0 +1,89 @@
+{
+  "unlocks": {
+    "autonomous_avalanche": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "browser_possession": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "claude_confidant": {
+      "evidence": null,
+      "first_tier": "Gold",
+      "unlocked_at": 1780011767
+    },
+    "config_surgeon": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "five_model_flight": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "gemini_cartographer": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "marathon_operator": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "model_sommelier": {
+      "evidence": null,
+      "first_tier": "Gold",
+      "unlocked_at": 1780011767
+    },
+    "multi_model_mage": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "openrouter_enjoyer": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "provider_polyglot": {
+      "evidence": null,
+      "first_tier": "Gold",
+      "unlocked_at": 1780011767
+    },
+    "rebase_acrobat": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "screenshot_hunter": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "subagent_commander": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "test_suite_tamer": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    },
+    "toolset_cartographer": {
+      "evidence": null,
+      "first_tier": "Silver",
+      "unlocked_at": 1780011767
+    },
+    "weekend_warrior": {
+      "evidence": null,
+      "first_tier": "Copper",
+      "unlocked_at": 1780011767
+    }
+  }
+}

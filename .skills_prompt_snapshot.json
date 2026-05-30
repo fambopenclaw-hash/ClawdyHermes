@@ -37,10 +37,6 @@
       1778310013984192234,
       7259
     ],
-    "create-html/SKILL.md": [
-      1778597474684122425,
-      9104
-    ],
     "create-markdown/SKILL.md": [
       1778597142825819123,
       7104
@@ -88,10 +84,6 @@
     "creative/humanizer/SKILL.md": [
       1778310013988192240,
       30025
-    ],
-    "creative/live-api-dashboard/SKILL.md": [
-      1778419036682273248,
-      18562
     ],
     "creative/manim-video/SKILL.md": [
       1778310013988192240,
@@ -158,8 +150,8 @@
       8709
     ],
     "get-news/SKILL.md": [
-      1777382369415928036,
-      6763
+      1779935193797695667,
+      5804
     ],
     "github/codebase-inspection/SKILL.md": [
       1778310013996192253,
@@ -188,10 +180,6 @@
     "github/github-repo-management/SKILL.md": [
       1778310014000192260,
       13683
-    ],
-    "github/publish-html-github-pages/SKILL.md": [
-      1778324811967514902,
-      5408
     ],
     "mcp/native-mcp/SKILL.md": [
       1778310014000192260,
@@ -289,6 +277,10 @@
       1778310014004192266,
       13411
     ],
+    "productivity/html-publishing/SKILL.md": [
+      1779905209431134445,
+      11560
+    ],
     "productivity/linear/SKILL.md": [
       1778310014004192266,
       14782
@@ -296,10 +288,6 @@
     "productivity/maps/SKILL.md": [
       1778310014004192266,
       6726
-    ],
-    "productivity/markdown-to-html/SKILL.md": [
-      1778314520868709100,
-      7419
     ],
     "productivity/nano-pdf/SKILL.md": [
       1778310014004192266,
@@ -346,8 +334,8 @@
       103375
     ],
     "research/website-content-analysis/SKILL.md": [
-      1778377854356665342,
-      6962
+      1779905209403134279,
+      10864
     ],
     "smart-home/openhue/SKILL.md": [
       1778310014004192266,
@@ -655,19 +643,6 @@
       }
     },
     {
-      "skill_name": "create-html",
-      "category": "create-html",
-      "frontmatter_name": "create-html",
-      "description": "Take any file input (PDF, image, text, code, CSV, HTML, a...",
-      "platforms": [],
-      "conditions": {
-        "fallback_for_toolsets": [],
-        "requires_toolsets": [],
-        "fallback_for_tools": [],
-        "requires_tools": []
-      }
-    },
-    {
       "skill_name": "create-markdown",
       "category": "create-markdown",
       "frontmatter_name": "create-markdown",
@@ -860,19 +835,6 @@
         "macos",
         "windows"
       ],
-      "conditions": {
-        "fallback_for_toolsets": [],
-        "requires_toolsets": [],
-        "fallback_for_tools": [],
-        "requires_tools": []
-      }
-    },
-    {
-      "skill_name": "live-api-dashboard",
-      "category": "creative",
-      "frontmatter_name": "live-api-dashboard",
-      "description": "Build and deploy a live data-fetching HTML dashboard page...",
-      "platforms": [],
       "conditions": {
         "fallback_for_toolsets": [],
         "requires_toolsets": [],
@@ -1284,19 +1246,6 @@
       }
     },
     {
-      "skill_name": "publish-html-github-pages",
-      "category": "github",
-      "frontmatter_name": "publish-html-github-pages",
-      "description": "Publish a static HTML file to a GitHub Pages repository (...",
-      "platforms": [],
-      "conditions": {
-        "fallback_for_toolsets": [],
-        "requires_toolsets": [],
-        "fallback_for_tools": [],
-        "requires_tools": []
-      }
-    },
-    {
       "skill_name": "native-mcp",
       "category": "mcp",
       "frontmatter_name": "native-mcp",
@@ -1691,6 +1640,19 @@
       }
     },
     {
+      "skill_name": "html-publishing",
+      "category": "productivity",
+      "frontmatter_name": "html-publishing",
+      "description": "Full pipeline for creating and publishing HTML content to...",
+      "platforms": [],
+      "conditions": {
+        "fallback_for_toolsets": [],
+        "requires_toolsets": [],
+        "fallback_for_tools": [],
+        "requires_tools": []
+      }
+    },
+    {
       "skill_name": "linear",
       "category": "productivity",
       "frontmatter_name": "linear",
@@ -1722,19 +1684,6 @@
         "requires_toolsets": [
           "terminal"
         ],
-        "fallback_for_tools": [],
-        "requires_tools": []
-      }
-    },
-    {
-      "skill_name": "markdown-to-html",
-      "category": "productivity",
-      "frontmatter_name": "markdown-to-html",
-      "description": "Convert a markdown file (analysis, report, notes) into a ...",
-      "platforms": [],
-      "conditions": {
-        "fallback_for_toolsets": [],
-        "requires_toolsets": [],
         "fallback_for_tools": [],
         "requires_tools": []
       }

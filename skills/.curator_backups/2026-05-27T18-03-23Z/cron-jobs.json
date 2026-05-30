@@ -1,0 +1,91 @@
+{
+  "jobs": [
+    {
+      "id": "17fc60db05ee",
+      "name": "OpenRouter Top 5 Daily Update",
+      "prompt": "Update the top 5 LLM models data at /tmp/openrouter-dashboard/data.json by scraping the OpenRouter rankings page.\n\nSteps:\n1. Navigate to https://openrouter.ai/rankings using browser_navigate\n2. Wait 8 seconds for the page to fully load and render the LLM Leaderboard data\n3. Extract the top 5 models from the LLM Leaderboard section by reading the page's rendered text\n4. Format the data as JSON matching this structure:\n{\n  \"lastUpdated\": \"<current ISO timestamp>\",\n  \"period\": \"This Week\",\n  \"source\": \"https://openrouter.ai/rankings\",\n  \"topModels\": [\n    {\"rank\": 1, \"name\": \"...\", \"author\": \"...\", \"tokens\": \"3.21T\", \"growth\": 73},\n    ...\n  ]\n}\n5. Write this JSON to /tmp/openrouter-dashboard/data.json using write_file (overwrite)\n6. Then cd /tmp/openrouter-dashboard and run: git add data.json && git commit -m \"chore: update openrouter top 5 rankings data\" && git push\n7. Verify the push succeeded",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "display": "0 9 * * *"
+      },
+      "schedule_display": "0 9 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 5
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-24T08:39:48.608837+08:00",
+      "next_run_at": "2026-05-28T09:00:00+08:00",
+      "last_run_at": "2026-05-27T09:05:05.732592+08:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": null,
+      "enabled_toolsets": [
+        "browser",
+        "terminal",
+        "file",
+        "web"
+      ],
+      "workdir": null
+    },
+    {
+      "id": "ae0539f4f788",
+      "name": "Daily 6AM News Briefing",
+      "prompt": "Load the get-news skill and execute it to generate the daily news briefing. Follow all instructions in the skill exactly: output in English only, format titles as ***bold italic***, summaries as plain text with no prefixes, include relevant emojis sparingly, and structure with correct category headers (\ud83c\uddf2\ud83c\uddfe Local, \ud83c\udf0d World, \ud83c\uddee\ud83c\uddf7\ud83c\uddfa\ud83c\uddf8 Iran/US, \ud83d\udcbb Tech). Deliver the final formatted news briefing.",
+      "skills": [
+        "get-news"
+      ],
+      "skill": "get-news",
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 6 * * *",
+        "display": "0 6 * * *"
+      },
+      "schedule_display": "0 6 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 1
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-26T08:37:12.288252+08:00",
+      "next_run_at": "2026-05-28T06:00:00+08:00",
+      "last_run_at": "2026-05-27T06:04:20.021776+08:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "telegram",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "6191189810",
+        "chat_name": "Fahmi Amni",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null
+    }
+  ],
+  "updated_at": "2026-05-27T09:05:05.734833+08:00"
+}
