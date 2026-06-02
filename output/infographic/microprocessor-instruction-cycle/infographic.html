@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microprocessor Instruction Cycle Infographic</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: #0D1B2A;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    min-height: 100vh;
+  }
+  
+  .infographic {
+    width: 1280px;
+    min-height: 720px;
+    background: #0D1B2A;
+    background-image:
+      linear-gradient(rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+    padding: 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative grid border */
+  .infographic::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    pointer-events: none;
+  }
+
+  /* Corner brackets */
+  .corner { position: absolute; width: 20px; height: 20px; border-color: rgba(59, 130, 246, 0.4); border-style: solid; }
+  .corner-tl { top: 15px; left: 15px; border-width: 2px 0 0 2px; }
+  .corner-tr { top: 15px; right: 15px; border-width: 2px 2px 0 0; }
+  .corner-bl { bottom: 15px; left: 15px; border-width: 0 0 2px 2px; }
+  .corner-br { bottom: 15px; right: 15px; border-width: 0 2px 2px 0; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+  }
+
+  .header .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #60A5FA;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    display: inline-block;
+    padding: 3px 14px;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 42px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(37, 99, 235, 0.3);
+  }
+
+  .header h1 span {
+    color: #60A5FA;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    color: #94A3B8;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .header .subtitle span {
+    color: #F59E0B;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.3), transparent);
+    margin: 0 auto 28px;
+    width: 80%;
+  }
+
+  /* Flow Row */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 5px 0 0;
+  }
+
+  .stage-card {
+    flex: 1;
+    max-width: 220px;
+    background: rgba(30, 58, 95, 0.5);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-radius: 8px;
+    padding: 16px 14px 14px;
+    position: relative;
+    transition: all 0.1s;
+  }
+
+  .stage-card:hover {
+    border-color: rgba(37, 99, 235, 0.5);
+    background: rgba(30, 58, 95, 0.7);
+  }
+
+  .stage-number {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2563EB;
+    display: block;
+    line-height: 1;
+    margin-bottom: 2px;
+    letter-spacing: -1px;
+  }
+
+  .stage-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .stage-subtitle {
+    font-size: 10px;
+    color: #60A5FA;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .stage-desc {
+    font-size: 11px;
+    color: #94A3B8;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .stage-desc strong {
+    color: #E2E8F0;
+    font-weight: 600;
+  }
+
+  .stage-component {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: #F59E0B;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Arrow between stages */
+  .arrow-connector {
+    flex-shrink: 0;
+    width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563EB;
+    font-size: 18px;
+    opacity: 0.7;
+  }
+
+  .arrow-connector svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Loop-back arrow */
+  .loop-section {
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+    height: 32px;
+  }
+
+  .loop-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #F59E0B;
+    letter-spacing: 1px;
+    background: rgba(245, 158, 11, 0.06);
+    border: 1px dashed rgba(245, 158, 11, 0.2);
+    padding: 6px 18px;
+    border-radius: 20px;
+  }
+
+  /* Speed Section */
+  .speed-section {
+    margin-top: 25px;
+    padding: 16px 24px;
+    background: rgba(30, 58, 95, 0.3);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .speed-item {
+    text-align: center;
+  }
+
+  .speed-item .value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: #60A5FA;
+    display: block;
+    line-height: 1;
+  }
+
+  .speed-item .label {
+    font-size: 10px;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .speed-item .highlight {
+    color: #F59E0B;
+  }
+
+  .speed-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(37, 99, 235, 0.2);
+  }
+
+  /* Detail rows */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .detail-card {
+    background: rgba(30, 58, 95, 0.25);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+
+  .detail-card h4 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    color: #60A5FA;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .detail-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .detail-card ul li {
+    font-size: 10.5px;
+    color: #94A3B8;
+    line-height: 1.6;
+    padding-left: 10px;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .detail-card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #2563EB;
+  }
+
+  .detail-card ul li strong {
+    color: #E2E8F0;
+    font-weight: 500;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0 0;
+    border-top: 1px solid rgba(37, 99, 235, 0.1);
+  }
+
+  .bottom-bar .legend {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: #64748B;
+    letter-spacing: 1px;
+  }
+
+  .bottom-bar .legend span {
+    color: #475569;
+    margin: 0 6px;
+  }
+
+  /* Pipelining note */
+  .pipeline-note {
+    margin-top: 15px;
+    padding: 10px 18px;
+    background: rgba(245, 158, 11, 0.04);
+    border-left: 3px solid #F59E0B;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pipeline-note .p-icon {
+    font-size: 20px;
+    color: #F59E0B;
+    flex-shrink: 0;
+  }
+
+  .pipeline-note .p-text {
+    font-size: 11.5px;
+    color: #94A3B8;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .pipeline-note .p-text strong {
+    color: #F59E0B;
+    font-weight: 600;
+  }
+
+  /* ANALOGY box */
+  .analogy-box {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    background: rgba(30, 58, 95, 0.35);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    border-radius: 6px;
+    padding: 10px 14px;
+    max-width: 200px;
+  }
+
+  .analogy-box .a-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .analogy-box .a-text {
+    font-size: 10px;
+    color: #64748B;
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  .analogy-box .a-text strong {
+    color: #94A3B8;
+    font-style: normal;
+  }
+
+  /* Legend keys */
+  .key-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .key-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .key-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="infographic">
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="tag">⚡ Computer Architecture</div>
+    <h1>The <span>Instruction</span> Cycle</h1>
+    <div class="subtitle">How a Microprocessor Executes Instructions · <span>FETCH → DECODE → EXECUTE → WRITEBACK</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Flow Stage Cards -->
+  <div class="flow-row">
+    <!-- Stage 1: FETCH -->
+    <div class="stage-card">
+      <span class="stage-number">01</span>
+      <span class="stage-title">Fetch</span>
+      <span class="stage-subtitle">Get the instruction</span>
+      <div class="stage-desc">
+        <strong>Program Counter (PC)</strong> holds the memory address of the next instruction. Sent to <strong>RAM</strong> via the <strong>address bus</strong>. RAM returns binary data via the <strong>data bus</strong> into the <strong>Instruction Register (IR)</strong>. PC then increments.
+      </div>
+      <span class="stage-component">PC → Address Bus → RAM → Data Bus → IR</span>
+    </div>
+
+    <div class="arrow-connector">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5">
+        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Stage 2: DECODE -->
+    <div class="stage-card">
+      <span class="stage-number">02</span>
+      <span class="stage-title">Decode</span>
+      <span class="stage-subtitle">Interpret the instruction</span>
+      <div class="stage-desc">
+        <strong>Control Unit (CU)</strong> examines bits in the IR. Instruction splits into <strong>opcode</strong> (what to do) and <strong>operands</strong> (what to use). For <code style="color:#F59E0B;font-size:11px;">ADD R1, R2, R3</code> — CU routes R2 &amp; R3 to the ALU, tells it to prepare for addition.
+      </div>
+      <span class="stage-component">CU · Opcode Decoder · Operand Routing</span>
+    </div>
+
+    <div class="arrow-connector">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5">
+        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Stage 3: EXECUTE -->
+    <div class="stage-card">
+      <span class="stage-number">03</span>
+      <span class="stage-title">Execute</span>
+      <span class="stage-subtitle">Do the computation</span>
+      <div class="stage-desc">
+        <strong>ALU</strong> receives values from registers. Inside, <strong>transistors</strong> form adder circuits from logic gates (half-adders, full-adders). Addition happens in <strong>1 clock cycle</strong>. Result emerges — e.g., 5 + 7 = <strong style="color:#60A5FA;">12</strong>. ALU also sets flag bits.
+      </div>
+      <span class="stage-component">ALU · Adder Circuit · Logic Gates</span>
+    </div>
+
+    <div class="arrow-connector">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5">
+        <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Stage 4: WRITEBACK -->
+    <div class="stage-card">
+      <span class="stage-number">04</span>
+      <span class="stage-title">Writeback</span>
+      <span class="stage-subtitle">Save the result</span>
+      <div class="stage-desc">
+        Result (12) is written back into destination <strong>Register R1</strong>. CU marks instruction as <strong>complete</strong>. CPU loops back to <strong>Stage 1 (Fetch)</strong> for the next instruction. The cycle repeats billions of times.
+      </div>
+      <span class="stage-component">Destination Register · Instruction Complete</span>
+    </div>
+  </div>
+
+  <!-- Loop-back arrow -->
+  <div class="loop-section">
+    <div class="loop-arrow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.5">
+        <path d="M3 12a9 9 0 1 1 9 9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3 21v-6h6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Cycle repeats for every instruction
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.5">
+        <path d="M21 12a9 9 0 1 1-9-9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 3v6h-6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Key legend -->
+  <div class="key-row">
+    <div class="key-item"><div class="key-dot" style="background:#2563EB;"></div> CPU Core Components</div>
+    <div class="key-item"><div class="key-dot" style="background:#F59E0B;"></div> Data &amp; Results Flow</div>
+    <div class="key-item"><div class="key-dot" style="background:#60A5FA;"></div> Memory Operations</div>
+  </div>
+
+  <!-- Detail Grid -->
+  <div class="detail-grid">
+    <div class="detail-card">
+      <h4>① FETCH · Details</h4>
+      <ul>
+        <li><strong>PC</strong>: Holds address of next instruction</li>
+        <li><strong>Address Bus</strong>: Sends address to RAM</li>
+        <li><strong>Data Bus</strong>: Returns instruction data</li>
+        <li><strong>IR</strong>: Stores current instruction</li>
+        <li><strong>PC = PC + 4</strong>: Points to next instruction</li>
+      </ul>
+    </div>
+    <div class="detail-card">
+      <h4>② DECODE · Details</h4>
+      <ul>
+        <li><strong>Opcode</strong>: What operation to perform</li>
+        <li><strong>Operands</strong>: What data to use</li>
+        <li><strong>CU</strong>: Activates appropriate circuits</li>
+        <li>Routes data to the <strong>ALU</strong></li>
+        <li>Prepares for computation</li>
+      </ul>
+    </div>
+    <div class="detail-card">
+      <h4>③ EXECUTE · Details</h4>
+      <ul>
+        <li><strong>ALU</strong>: Performs math &amp; logic</li>
+        <li><strong>Transistors</strong> form adder circuits</li>
+        <li>Half-adders + full-adders = addition</li>
+        <li>Result + <strong>flag bits</strong> (overflow, zero)</li>
+        <li>1 clock cycle (or a few)</li>
+      </ul>
+    </div>
+    <div class="detail-card">
+      <h4>④ WRITEBACK · Details</h4>
+      <ul>
+        <li>Result saved to <strong>Register</strong></li>
+        <li>CU marks instruction <strong>complete</strong></li>
+        <li>Loop back to <strong>FETCH</strong></li>
+        <li>Next instruction begins</li>
+        <li>Continues until program halts</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pipeline Note -->
+  <div class="pipeline-note">
+    <div class="p-icon">⚙️</div>
+    <div class="p-text">
+      <strong>Modern Pipelining:</strong> While Instruction A is at Writeback, Instruction B is at Execute, Instruction C is at Decode, and Instruction D is being Fetched — like an assembly line. <strong>3 GHz</strong> CPU = <strong>3 billion</strong> cycles per second.
+    </div>
+  </div>
+
+  <!-- Speed Stats -->
+  <div class="speed-section">
+    <div class="speed-item">
+      <span class="value">3 GHz</span>
+      <span class="label">Clock Speed = 3 Billion Ticks/sec</span>
+    </div>
+    <div class="speed-divider"></div>
+    <div class="speed-item">
+      <span class="value">1–30</span>
+      <span class="label">Cycles Per Instruction</span>
+    </div>
+    <div class="speed-divider"></div>
+    <div class="speed-item">
+      <span class="value">4-Stage</span>
+      <span class="label">Pipeline</span>
+    </div>
+    <div class="speed-divider"></div>
+    <div class="speed-item">
+      <span class="value highlight">~134B</span>
+      <span class="label">Transistors (Apple M2 Ultra)</span>
+    </div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom-bar">
+    <div class="legend">MICROPROCESSOR · INSTRUCTION CYCLE · FETCH · DECODE · EXECUTE · WRITEBACK</div>
+    <div class="legend"><span>◈</span> EDUCATIONAL INFOGRAPHIC <span>◈</span></div>
+  </div>
+
+  <!-- Analogy -->
+  <div class="analogy-box">
+    <div class="a-label">💡 Quick Analogy</div>
+    <div class="a-text"><strong>Transistor</strong> = A toggle switch · <strong>Microprocessor</strong> = A factory with billions of switches doing useful work</div>
+  </div>
+</div>
+</body>
+</html>

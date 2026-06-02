@@ -193,8 +193,19 @@ Trigger on: "publish to GitHub Pages", "put this on my site", "deploy".
 
 ### Step 1: Locate the Repo
 
+**Check memory first**: The user may have saved the canonical clone path in memory. Check your memory for entries like "Clone at /path/to/repo" or "GitHub Pages repo."
+
+Then search known locations:
 ```bash
+# Check /tmp/ for freshly-cloned repos
+ls /tmp/*github*/ 2>/dev/null
+ls /tmp/*pages*/ 2>/dev/null
+
+# Check home directory for legacy clones
 find ~ -maxdepth 4 -type d \( -name "*.github.io" -o -name "github.io" \) 2>/dev/null
+
+# Check if .openclaw/workspace/github.io exists (legacy location)
+ls ~/.openclaw/workspace/github.io/.git 2>/dev/null && echo "FOUND"
 ```
 
 **Verify remote** — do NOT trust directory names:
@@ -204,12 +215,12 @@ git remote -v
 # Should show: origin git@github.com:OWNER/REPO.git matching the expected Pages repo
 ```
 
-If not found, clone fresh:
+If not found, clone to `/tmp/{repo-name}/`:
 ```bash
-gh repo clone OWNER/username.github.io
-# or
-git clone git@github.com:OWNER/REPO.git
+git clone git@github.com:OWNER/REPO.git /tmp/{repo-name}/
 ```
+
+The `gh` CLI is often unavailable. Prefer `git clone` with SSH as the primary method. If `gh` is available, you can also use `gh repo clone OWNER/REPO`.
 
 ### Step 2: Verify GitHub Pages is Enabled
 
@@ -257,9 +268,34 @@ Read `index.html` to understand its structure (card-grid or link-list style).
 </li>
 ```
 
-Check if there are category sections. If so, increment the category count (e.g., "2 reports" → "3 reports") and add the entry in the correct category.
+**If the page belongs in an existing category**: Find the matching `<div class="category">` block. Increment the category count (e.g., "2 reports" → "3 reports") and add the new `<li>` entry at the TOP of the `<ul class="link-list">` (newest first convention).
 
-Use `patch` for targeted edits to `index.html` — do NOT rewrite the entire file.
+**If the page needs a new category**: The user might say "save under Daily Learning" or "add to a new section." Create a new `<div class="category">` block and insert it before the `<div class="about">` section (or at the top of the `.body` div). Follow the exact pattern of existing categories:
+
+```html
+<div class="category">
+  <div class="cat-header">
+    <span class="cat-icon">📖</span>
+    <span class="cat-title">New Category Name</span>
+    <span class="cat-count">1 report</span>
+  </div>
+  <ul class="link-list">
+    <li>
+      <a class="list-link accent-{color}" href="filename.html">
+        <span class="link-main">
+          <span class="link-title">Page Title</span>
+          <span class="link-desc">Short description of the page content.</span>
+        </span>
+        <span class="link-tag">TAG</span>
+      </a>
+    </li>
+  </ul>
+</div>
+```
+
+Available accent classes: `accent-green` (O&G, DMR), `accent-amber` (daily learning), `accent-red`, `accent-purple` (HR), `accent-oc` (AI/trackers). No class = default blue accent.
+
+Use `patch` for targeted edits to `index.html` — do NOT rewrite the entire file. After patching, re-read the relevant section to verify the structure is well-formed HTML (no unclosed tags).
 
 ### Step 6: Commit and Push
 

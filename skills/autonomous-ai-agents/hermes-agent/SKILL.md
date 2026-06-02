@@ -634,6 +634,8 @@ before continuing its own loop. Isolated context + terminal session.
 
 Config: `delegation.*` in `config.yaml`.
 
+**Vision fallback:** If your primary model can't process images (e.g. DeepSeek), configure a vision-capable delegation model so the agent can describe images via subagent. See `references/vision-delegation-workaround.md`.
+
 ### Cron (scheduled jobs)
 
 Durable scheduler — `cron/jobs.py` + `cron/scheduler.py`. Drive it via

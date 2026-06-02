@@ -180,13 +180,15 @@ See `references/structured-content-template.md` for detailed format.
 
 ### Step 4: Confirm Options
 
-Use the `clarify` tool to confirm options with the user. Since `clarify` handles one question at a time, ask the most important question first:
+**Prefer `clarify` tool if available**: Use `clarify` to confirm options with the user. Since `clarify` handles one question at a time, ask the most important question first:
 
 **Q1 — Combination**: Present 3+ layout×style combos with rationale. Ask user to pick one.
 
 **Q2 — Aspect**: Ask for aspect ratio preference (landscape/portrait/square or custom W:H).
 
 **Q3 — Language** (only if source ≠ user language): Ask which language the text content should use.
+
+**Fallback when `clarify` tool is unavailable**: Present the options directly in your response as a numbered list. Ask the user to reply with their choice (e.g., "Pick a number: 1, 2, or 3"). Then proceed to Step 5 once they respond.
 
 ### Step 5: Generate Prompt → `prompts/infographic.md`
 
@@ -209,12 +211,27 @@ Save the assembled prompt to `prompts/infographic.md` using `write_file`.
 
 ### Step 6: Generate Image
 
-Use the `image_generate` tool with the assembled prompt from Step 5.
+**Primary approach** — Use the `image_generate` tool with the assembled prompt from Step 5.
 
 - Map aspect ratio to image_generate's format: `16:9` → `landscape`, `9:16` → `portrait`, `1:1` → `square`
 - For custom ratios, pick the closest named aspect
 - On failure, auto-retry once
 - Save the resulting image URL/path to the output directory
+
+**Fallback when `image_generate` tool is unavailable** — Create the infographic as a self-contained HTML+CSS file and screenshot it via the browser:
+
+1. **Render the layout+style in HTML/CSS**: Translate the selected layout's structure (e.g., horizontal flow for `linear-progression`, circle for `circular-flow`) and the selected style's aesthetic (colors, fonts, grid patterns) into a single `.html` file. Load the layout and style reference files first to get exact color codes, typography, and visual element descriptions.
+2. **Embed all content**: Include the structured content from Step 2 — headline, section text, labels, stage descriptions, data points — directly in the HTML. Use `<div>`, flexbox/grid, and inline SVG for arrows and icons.
+3. **Set viewport dimensions**: Match the aspect ratio (e.g., 1280×720 for landscape, 720×1280 for portrait, 800×800 for square).
+4. **Open in browser**: Use `browser_navigate(url='file:///path/to/file.html')` to render it.
+5. **Take screenshot**: The browser screenshot (`browser_vision` or the auto-captured screenshot at `/home/fahmibakeri/.hermes/cache/screenshots/`) produces the PNG. Copy it to the output directory as `infographic.png`.
+6. **Share via MEDIA**: Use `MEDIA:/path/to/infographic.png` in your response to send it as an image to the user.
+
+**HTML rendering tips by style**:
+- `technical-schematic`: Dark blue background (#0D1B2A or #1E3A5F), CSS grid background, white text, amber accents (#F59E0B), monospace font (Share Tech Mono or similar), corner brackets as CSS `::before` pseudo-elements.
+- `corporate-memphis`: Flat bright colors, sans-serif font, heavy borders, bold typography.
+- `hand-drawn-edu`: Pastel backgrounds (#FEF3C7, #DBEAFE), rounded corners, soft shadows, wobbly-looking borders via border-radius.
+- `craft-handmade`: Warm beige background, hand-drawn aesthetic, irregular borders, serif font.
 
 ### Step 7: Output Summary
 
@@ -234,4 +251,10 @@ Report: topic, layout, style, aspect, language, output path, files created.
 2. **Strip secrets** — always scan source content for API keys, tokens, or credentials before including in any output file.
 3. **One message per section** — each infographic section should convey one clear concept. Overloading sections reduces readability.
 4. **Style consistency** — the style definition from the references file must be applied consistently across the entire infographic. Don't mix styles.
-5. **image_generate aspect ratios** — the tool only supports `landscape`, `portrait`, and `square`. Custom ratios like `3:4` should map to the nearest option (portrait in that case).
+5. **`image_generate` aspect ratios** — the tool only supports `landscape`, `portrait`, and `square`. Custom ratios like `3:4` should map to the nearest option (portrait in that case).
+
+6. **Reading layout/style reference files** — The `skill_view` tool's `linked_files` dict only shows top-level references (`analysis-framework.md`, `structured-content-template.md`, `base-prompt.md`). Layout definitions at `references/layouts/<name>.md` and style definitions at `references/styles/<name>.md` are NOT listed there. To read them, use `read_file(path='<skill_dir>/references/layouts/<name>.md')` directly with the full filesystem path from `skill_dir` in the skill metadata. Alternatively, grep: `skill_view(name='baoyu-infographic', file_path='references/layouts/linear-progression.md')` often works despite the layout files not appearing in `linked_files`.
+
+7. **`clarify` tool may be unavailable** — If the `clarify` tool isn't in your tool list, skip Step 4's clarify workflow. Instead present options inline in your response as a numbered list and ask the user to reply with their choice. Proceed once they respond.
+
+8. **No source file to save** — The backup/comparison logic for `source.md` assumes the source comes as a file. If the source is conversation text (user's question + your prior explanation), skip the `source.md` backup step and go straight to analysis. The `source-{slug}.{ext}` file in the output structure is optional.
